@@ -37,10 +37,10 @@ const template = _.template(baseTemplate); // returns a function
 
 /* **** DB Connection modules **** */
 const db = require('./../database/database');
-const util = require('./util');
+// const util = require('./util');
 const auth = require('./auth');
-const api = require('./api');
-const gqlSchema = require('../graphQL/schema');
+// const api = require('./api');
+// const gqlSchema = require('../graphQL/schema');
 
 /* **** Apply universal middleware **** */
 app.use('/public', express.static(`${__dirname}/../public`));
@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(morgan({ format: 'dev' }));
-app.use('/graphql', graphqlHTTP({ schema: gqlSchema, graphiql: true }));
+// app.use('/graphql', graphqlHTTP({ schema: gqlSchema, graphiql: true }));
 
 /* **** Authentication **** */
 app.post('/signup', auth.signup);
@@ -57,6 +57,7 @@ app.post('/api/user/login', auth.userLogin);
 app.post('/api/user/signup', auth.userSignup);
 
 /* **** API **** */
+/*
 // app.use('/api', auth.checkIfAuthenticated, api);
 app.use('/api', api);
 
@@ -247,8 +248,10 @@ app.post('/charge', async (req, res) => {
     res.status(500).end();
   }
 });
+*/
 
 /* **** Catch All - all server requests above here **** */
+
 app.use(auth.checkIfAuthenticated, (req, res) => {
   console.log(req.url);
   const context = {};
