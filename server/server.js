@@ -1,62 +1,53 @@
-require('babel-register');
-require('dotenv').config();
-require('babel-register');
-
-/* **** CODE TO RESOLVE TESTING BUG WITH MYSQL - DO NOT MOVE OR CHANGE **** */
-// relevant StackOverflow: https://stackoverflow.com/questions/46227783/encoding-not-recognized-in-jest-js
-
-const iconv = require('iconv-lite'); // eslint-disable-line import/no-extraneous-dependencies
-const encodings = require('iconv-lite/encodings'); // eslint-disable-line import/no-extraneous-dependencies
-
-iconv.encodings = encodings;
-/* **** END CODE TO DEBUG MYSQL + TEST **** */
+// require('babel-register');
+// require('dotenv').config();
 
 /* **** Express modules **** */
 const express = require('express');
 
 const app = express();
 const morgan = require('morgan');
-const graphqlHTTP = require('express-graphql');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY_TEST);
+// const graphqlHTTP = require('express-graphql');
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY_TEST);
 
 /* **** JWT and Authentication Modules **** */
 const cookieParser = require('cookie-parser');
 
 /* **** Server-side Rendering Modules **** */
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const ReactRouter = require('react-router-dom');
-const _ = require('lodash');
-const fs = require('fs');
+// const React = require('react');
+// const ReactDOMServer = require('react-dom/server');
+// const ReactRouter = require('react-router-dom');
+// const _ = require('lodash');
+// const fs = require('fs');
 const bodyParser = require('body-parser');
-const App = require('../src/app/app.jsx').default;
+// const App = require('../src/app/app.jsx').default;
 
-const { StaticRouter } = ReactRouter;
-const baseTemplate = fs.readFileSync(`${__dirname}/../src/index.html`);
-const template = _.template(baseTemplate); // returns a function
+// const { StaticRouter } = ReactRouter;
+// const baseTemplate = fs.readFileSync(`${__dirname}/../src/index.html`);
+// const template = _.template(baseTemplate); // returns a function
 
 /* **** DB Connection modules **** */
-const db = require('./../database/database');
-const util = require('./util');
+// const db = require('./../database/database');
+// const util = require('./util');
 const auth = require('./auth');
-const api = require('./api');
-const gqlSchema = require('../graphQL/schema');
+// const api = require('./api');
+// const gqlSchema = require('../graphQL/schema');
 
 /* **** Apply universal middleware **** */
-app.use('/public', express.static(`${__dirname}/../public`));
+// app.use('/public', express.static(`${__dirname}/../public`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(morgan({ format: 'dev' }));
-app.use('/graphql', graphqlHTTP({ schema: gqlSchema, graphiql: true }));
+// app.use('/graphql', graphqlHTTP({ schema: gqlSchema, graphiql: true }));
 
 /* **** Authentication **** */
-app.post('/signup', auth.signup);
-app.post('/login', auth.login);
+app.post('/api/chef/signup', auth.chefSignup);
+app.post('/api/chef/login', (req, res, next) => console.log('login request on host 2560 is', req) || next(), auth.chefLogin);
 app.post('/api/user/login', auth.userLogin);
 app.post('/api/user/signup', auth.userSignup);
 
 /* **** API **** */
+/*
 // app.use('/api', auth.checkIfAuthenticated, api);
 app.use('/api', api);
 
@@ -247,31 +238,33 @@ app.post('/charge', async (req, res) => {
     res.status(500).end();
   }
 });
+*/
 
 /* **** Catch All - all server requests above here **** */
-app.use(auth.checkIfAuthenticated, (req, res) => {
-  console.log(req.url);
-  const context = {};
-  const body = ReactDOMServer.renderToString(
-    // eslint-disable max-len
-    React.createElement(StaticRouter, { location: req.url, context }, React.createElement(App)),
-  );
 
-  // TODO: read up on context.url and redirection (e.g. Brian Holt frontend masters)
-  if (context.url) {
-    res.redirect(301, context.url);
-  }
+// app.use(auth.checkIfAuthenticated, (req, res) => {
+//   console.log(req.url);
+//   const context = {};
+//   const body = ReactDOMServer.renderToString(
+//     // eslint-disable max-len
+//     React.createElement(StaticRouter, { location: req.url, context }, React.createElement(App)),
+//   );
 
-  res.write(template({ body }));
-  res.end();
-});
+//   // TODO: read up on context.url and redirection (e.g. Brian Holt frontend masters)
+//   if (context.url) {
+//     res.redirect(301, context.url);
+//   }
+
+//   res.write(template({ body }));
+//   res.end();
+// });
 
 /* ***** Error Handler ***** */
-app.use((err, req, res, next) => {
-  if (err.status === 401) {
-    return res.redirect('/');
-  }
-  return next();
-});
+// app.use((err, req, res, next) => {
+//   if (err.status === 401) {
+//     return res.redirect('/');
+//   }
+//   return next();
+// });
 
 module.exports = app;

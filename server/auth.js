@@ -31,7 +31,7 @@ const checkIfAuthenticated = expressJwt({
 
 /* ********** LOGIN ********** */
 const userLogin = (req, res) => {
-  const { username, password } = req.body; // needs to be req.query for Postman
+  const { username, password } = req.body;
 
   let user;
   if (!username || !password) {
@@ -73,9 +73,9 @@ const userLogin = (req, res) => {
     .catch(err => res.status(401).send(err));
 };
 
-const login = (req, res) => {
+const chefLogin = (req, res) => {
   console.log('incoming login request is', req);
-  const { username, password } = req.body; // needs to be req.query for Postman
+  const { username, password } = req.body;
 
   let chef;
   if (!username || !password) {
@@ -122,7 +122,7 @@ const userSignup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman
+  } = req.body;
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
@@ -140,14 +140,17 @@ const userSignup = (req, res) => {
 
     .then(hash => users.createUser(username, hash, email, name))
 
-    .then(() => res.send('ok'));
+    .then((record) => {
+      const { dataValues: { id: authId } } = record;
+      res.send({ authId });
+    });
 };
 
-const signup = (req, res) => {
+const chefSignup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman
+  } = req.body;
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
@@ -165,11 +168,14 @@ const signup = (req, res) => {
 
     .then(hash => chefs.createChef(username, hash, email, name))
 
-    .then(() => res.send('ok'));
+    .then((record) => {
+      const { dataValues: { id: authId } } = record;
+      res.send({ authId });
+    });
 };
 
-exports.login = login;
+exports.chefLogin = chefLogin;
 exports.userLogin = userLogin;
-exports.signup = signup;
+exports.chefSignup = chefSignup;
 exports.userSignup = userSignup;
 exports.checkIfAuthenticated = checkIfAuthenticated;
