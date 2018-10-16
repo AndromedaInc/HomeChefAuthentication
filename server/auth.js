@@ -63,11 +63,13 @@ const userLogin = (req, res) => {
 
     .then((token) => {
       console.log('weve got a token and are ready to send!', token);
-      res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
+      // leave SESSIONID and { httpOnly: false, secure: false} to main server
+      // res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
+      // res.body(token);
       const {
         dataValues: { id: authId },
       } = user;
-      return res.status(200).send({ authId });
+      return res.status(200).send({ authId, token });
     })
 
     .catch(err => res.status(401).send(err));
@@ -107,11 +109,13 @@ const chefLogin = (req, res) => {
 
     .then((token) => {
       console.log('weve got a token and are ready to send!', token);
-      res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
+      // leave SESSIONID and { httpOnly: false, secure: false} to main server
+      // res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
+      // res.body(token);
       const {
         dataValues: { id: authId },
       } = chef;
-      return res.status(200).send({ authId });
+      return res.status(200).send({ authId, token });
     })
 
     .catch(err => res.status(401).send(err));
@@ -124,6 +128,7 @@ const userSignup = (req, res) => {
     username, password, email, name,
   } = req.body;
 
+  let user;
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
   }
@@ -141,9 +146,17 @@ const userSignup = (req, res) => {
     .then(hash => users.createUser(username, hash, email, name))
 
     .then((record) => {
-      const { dataValues: { id: authId } } = record;
-      res.send({ authId });
-    });
+      user = record;
+      return createJWTBearerToken(user);
+    })
+
+    .then((token) => {
+      console.log('weve got a token and are ready to send!', token);
+      const { dataValues: { id: authId } } = user;
+      return res.status(200).send({ authId, token });
+    })
+
+    .catch(err => res.status(401).send(err));
 };
 
 const chefSignup = (req, res) => {
@@ -152,6 +165,7 @@ const chefSignup = (req, res) => {
     username, password, email, name,
   } = req.body;
 
+  let chef;
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
   }
@@ -169,9 +183,17 @@ const chefSignup = (req, res) => {
     .then(hash => chefs.createChef(username, hash, email, name))
 
     .then((record) => {
-      const { dataValues: { id: authId } } = record;
-      res.send({ authId });
-    });
+      chef = record;
+      return createJWTBearerToken(chef);
+    })
+
+    .then((token) => {
+      console.log('weve got a token and are ready to send!', token);
+      const { dataValues: { id: authId } } = chef;
+      return res.status(200).send({ authId, token });
+    })
+
+    .catch(err => res.status(401).send(err));
 };
 
 exports.chefLogin = chefLogin;
