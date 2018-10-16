@@ -65,9 +65,9 @@ const userLogin = (req, res) => {
       console.log('weve got a token and are ready to send!', token);
       res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
       const {
-        dataValues: { id: userId },
+        dataValues: { id: authId },
       } = user;
-      return res.status(200).send({ userId });
+      return res.status(200).send({ authId });
     })
 
     .catch(err => res.status(401).send(err));
@@ -109,9 +109,9 @@ const chefLogin = (req, res) => {
       console.log('weve got a token and are ready to send!', token);
       res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
       const {
-        dataValues: { id: chefId },
+        dataValues: { id: authId },
       } = chef;
-      return res.status(200).send({ chefId });
+      return res.status(200).send({ authId });
     })
 
     .catch(err => res.status(401).send(err));
