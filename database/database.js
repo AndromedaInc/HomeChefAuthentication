@@ -44,16 +44,10 @@ orm
 /* ///////////////////// */
 
 const Chef = orm.define('chef', {
-  city: Sequelize.TEXT,
-  description: Sequelize.TEXT,
   email: Sequelize.STRING,
-  imageUrl: Sequelize.STRING,
   name: Sequelize.STRING,
   password: Sequelize.STRING,
   username: Sequelize.STRING,
-  stateName: Sequelize.TEXT,
-  streetAddress: Sequelize.TEXT,
-  zip: Sequelize.INTEGER,
   createdAt: {
     type: 'TIMESTAMP',
     allowNull: false,
@@ -156,11 +150,10 @@ const Chef = orm.define('chef', {
 // });
 
 const User = orm.define('user', {
-  name: Sequelize.STRING,
-  username: Sequelize.STRING,
-  password: Sequelize.STRING,
   email: Sequelize.STRING,
-  imageUrl: Sequelize.STRING,
+  name: Sequelize.STRING,
+  password: Sequelize.STRING,
+  username: Sequelize.STRING,
   createdAt: {
     type: 'TIMESTAMP',
     allowNull: false,
