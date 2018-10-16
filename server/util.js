@@ -1,4 +1,5 @@
 /* **** EXPORTS **** */
+/*
 exports.organizeSchedule = (data) => {
   const schedule = {}; // eventId : { event object }
   data.forEach((itemEvent) => {
@@ -116,3 +117,4 @@ exports.organizeSchedule = (data) => {
 //     },
 //   },
 // ];
+*/

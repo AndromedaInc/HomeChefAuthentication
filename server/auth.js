@@ -31,7 +31,7 @@ const checkIfAuthenticated = expressJwt({
 
 /* ********** LOGIN ********** */
 const userLogin = (req, res) => {
-  const { username, password } = req.body; // needs to be req.query for Postman
+  const { username, password } = req.query; // needs to be req.query for Postman
 
   let user;
   if (!username || !password) {
@@ -75,7 +75,8 @@ const userLogin = (req, res) => {
 
 const login = (req, res) => {
   console.log('incoming login request is', req);
-  const { username, password } = req.body; // needs to be req.query for Postman
+  const { username, password } = req.query; // needs to be req.query for Postman and req.body for normal app
+  // const { username, password } = req.body; // needs to be req.query for Postman and req.body for normal app
 
   let chef;
   if (!username || !password) {
@@ -122,7 +123,7 @@ const userSignup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman
+  } = req.query; // needs to be req.query for Postman
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
@@ -140,14 +141,17 @@ const userSignup = (req, res) => {
 
     .then(hash => users.createUser(username, hash, email, name))
 
-    .then(() => res.send('ok'));
+    .then((record) => {
+      const { dataValues: { id: userId } } = record;
+      res.send({ userId });
+    });
 };
 
 const signup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman
+  } = req.query; // needs to be req.query for Postman and req.body for the app
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
@@ -165,7 +169,10 @@ const signup = (req, res) => {
 
     .then(hash => chefs.createChef(username, hash, email, name))
 
-    .then(() => res.send('ok'));
+    .then((record) => {
+      const { dataValues: { id: chefId } } = record;
+      res.send({ chefId });
+    });
 };
 
 exports.login = login;

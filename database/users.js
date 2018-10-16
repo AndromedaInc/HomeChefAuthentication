@@ -18,7 +18,7 @@ const createUser = (username, password, email, name) => db.User.create({
   name,
 });
 
-const getUser = id => db.User.findOne({ where: { id } });
+// const getUser = id => db.User.findOne({ where: { id } });
 
 // const upsertAccountInfo = ({
 //   city,
@@ -44,11 +44,11 @@ const getUser = id => db.User.findOne({ where: { id } });
 //   zip,
 // });
 
-const findUser = username => db.User.findOne({ where: { username } });
+// const findUser = username => db.User.findOne({ where: { username } });
 
 exports.checkExistingEmailUsername = checkExistingEmailUsername;
 exports.checkUsername = checkUsername;
 exports.createUser = createUser;
-exports.getUser = getUser;
+// exports.getUser = getUser;
 // exports.upsertAccountInfo = upsertAccountInfo;
-exports.findUser = findUser;
+// exports.findUser = findUser;
