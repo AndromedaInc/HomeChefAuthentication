@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "dev-server": "nodemon --inspect server/index.js",
+    "dev-server": "nodemon --inspect=2560 server/index.js",
     "lint": "eslint database server",
     "start": "node server/index.js",
     "test": "npm run lint"
