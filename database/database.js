@@ -59,7 +59,6 @@ const User = orm.define('user', {
     type: 'TIMESTAMP',
     allowNull: false,
   },
-  // payment_info: ?
 });
 
 orm.sync();
