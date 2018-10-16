@@ -142,8 +142,8 @@ const userSignup = (req, res) => {
     .then(hash => users.createUser(username, hash, email, name))
 
     .then((record) => {
-      const { dataValues: { id: userId } } = record;
-      res.send({ userId });
+      const { dataValues: { id: authId } } = record;
+      res.send({ authId });
     });
 };
 
@@ -170,8 +170,8 @@ const signup = (req, res) => {
     .then(hash => chefs.createChef(username, hash, email, name))
 
     .then((record) => {
-      const { dataValues: { id: chefId } } = record;
-      res.send({ chefId });
+      const { dataValues: { id: authId } } = record;
+      res.send({ authId });
     });
 };
 
