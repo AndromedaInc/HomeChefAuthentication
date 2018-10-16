@@ -50,8 +50,8 @@ app.use(morgan({ format: 'dev' }));
 // app.use('/graphql', graphqlHTTP({ schema: gqlSchema, graphiql: true }));
 
 /* **** Authentication **** */
-app.post('/signup', auth.signup);
-app.post('/login', (req, res, next) => console.log('login request on host 2560 is', req) || next(), auth.login);
+app.post('/api/chef/signup', auth.chefSignup);
+app.post('/api/chef/login', (req, res, next) => console.log('login request on host 2560 is', req) || next(), auth.chefLogin);
 app.post('/api/user/login', auth.userLogin);
 app.post('/api/user/signup', auth.userSignup);
 
