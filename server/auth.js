@@ -31,7 +31,7 @@ const checkIfAuthenticated = expressJwt({
 
 /* ********** LOGIN ********** */
 const userLogin = (req, res) => {
-  const { username, password } = req.body; // needs to be req.query for Postman
+  const { username, password } = req.body;
 
   let user;
   if (!username || !password) {
@@ -75,8 +75,7 @@ const userLogin = (req, res) => {
 
 const chefLogin = (req, res) => {
   console.log('incoming login request is', req);
-  const { username, password } = req.body; // needs to be req.query for Postman and req.body for normal app
-  // const { username, password } = req.body; // needs to be req.query for Postman and req.body for normal app
+  const { username, password } = req.body;
 
   let chef;
   if (!username || !password) {
@@ -123,7 +122,7 @@ const userSignup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman
+  } = req.body;
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
@@ -151,7 +150,7 @@ const chefSignup = (req, res) => {
   console.log('incoming signup request is', req);
   const {
     username, password, email, name,
-  } = req.body; // needs to be req.query for Postman and req.body for the app
+  } = req.body;
 
   if (!username || !password || !email || !name) {
     return res.status(401).send('incomplete fields');
