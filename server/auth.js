@@ -19,7 +19,7 @@ const RSA_PUBLIC_KEY = process.env.RSA_PUBLIC_KEY || fs.readFileSync(`${__dirnam
 const createJWTBearerToken = user => jwt.sign({}, RSA_PRIVATE_KEY, {
   algorithm: 'RS256',
   expiresIn: 600000, // 10 min is 600000
-  subject: user.id.toString(),
+  subject: user.id.toString(), // TODO: might want to change this to username now that set up as a microservice
 });
 
 // To protect routes
@@ -63,9 +63,6 @@ const userLogin = (req, res) => {
 
     .then((token) => {
       console.log('weve got a token and are ready to send!', token);
-      // leave SESSIONID and { httpOnly: false, secure: false} to main server
-      // res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
-      // res.body(token);
       const {
         dataValues: { id: authId },
       } = user;
@@ -109,9 +106,6 @@ const chefLogin = (req, res) => {
 
     .then((token) => {
       console.log('weve got a token and are ready to send!', token);
-      // leave SESSIONID and { httpOnly: false, secure: false} to main server
-      // res.cookie('SESSIONID', token, { httpOnly: false, secure: false });
-      // res.body(token);
       const {
         dataValues: { id: authId },
       } = chef;
