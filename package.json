@@ -1,10 +1,13 @@
 {
   "name": "HomeChef",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.11.3"
+  },
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "dev-server": "nodemon --inspect server/index.js",
+    "dev-server": "nodemon --inspect=5260 server/index.js",
     "lint": "eslint database server",
     "start": "node server/index.js",
     "test": "npm run lint"
