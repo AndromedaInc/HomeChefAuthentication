@@ -15,14 +15,14 @@ const users = require('./../database/users.js');
 const RSA_PRIVATE_KEY = process.env.RSA_PRIVATE_KEY || fs.readFileSync(`${__dirname}/../config/private.key`);
 const RSA_PUBLIC_KEY = process.env.RSA_PUBLIC_KEY || fs.readFileSync(`${__dirname}/../config/public.key`);
 
-// To generate token to be placed in cookie
+// Generate token to be placed in cookie
 const createJWTBearerToken = user => jwt.sign({}, RSA_PRIVATE_KEY, {
   algorithm: 'RS256',
   expiresIn: 600000, // 10 min is 600000
   subject: user.id.toString(), // TODO: might want to change this to username now that set up as a microservice
 });
 
-// To protect routes
+// Protect routes
 const checkIfAuthenticated = expressJwt({
   secret: RSA_PUBLIC_KEY,
   // comment out following line if sending Postman requests as cookie is retrieved differently
@@ -45,16 +45,13 @@ const userLogin = (req, res) => {
         return res.status(400).send('user not found');
       }
       user = userRecord;
-      console.log('found record is', user);
       const {
         dataValues: { password: hash },
       } = user;
-      console.log('password match boolean is', bcrypt.compare(password, hash));
       return bcrypt.compare(password, hash);
     })
 
     .then((match) => {
-      console.log('match status is', match);
       if (match) {
         return createJWTBearerToken(user);
       }
@@ -62,7 +59,6 @@ const userLogin = (req, res) => {
     })
 
     .then((token) => {
-      console.log('weve got a token and are ready to send!', token);
       const {
         dataValues: { id: authId },
       } = user;
@@ -73,7 +69,6 @@ const userLogin = (req, res) => {
 };
 
 const chefLogin = (req, res) => {
-  console.log('incoming login request is', req);
   const { username, password } = req.body;
 
   let chef;
@@ -88,16 +83,13 @@ const chefLogin = (req, res) => {
         return res.status(400).send('user not found');
       }
       chef = chefRecord;
-      console.log('found record is', chef);
       const {
         dataValues: { password: hash },
       } = chef;
-      console.log('password match boolean is', bcrypt.compare(password, hash));
       return bcrypt.compare(password, hash);
     })
 
     .then((match) => {
-      console.log('match status is', match);
       if (match) {
         return createJWTBearerToken(chef);
       }
@@ -105,7 +97,6 @@ const chefLogin = (req, res) => {
     })
 
     .then((token) => {
-      console.log('weve got a token and are ready to send!', token);
       const {
         dataValues: { id: authId },
       } = chef;
@@ -117,7 +108,6 @@ const chefLogin = (req, res) => {
 
 /* ********** SIGNUP ********** */
 const userSignup = (req, res) => {
-  console.log('incoming signup request is', req);
   const {
     username, password, email, name,
   } = req.body;
@@ -145,7 +135,6 @@ const userSignup = (req, res) => {
     })
 
     .then((token) => {
-      console.log('weve got a token and are ready to send!', token);
       const { dataValues: { id: authId } } = user;
       return res.status(200).send({ authId, token });
     })
@@ -154,7 +143,6 @@ const userSignup = (req, res) => {
 };
 
 const chefSignup = (req, res) => {
-  console.log('incoming signup request is', req);
   const {
     username, password, email, name,
   } = req.body;
@@ -182,7 +170,6 @@ const chefSignup = (req, res) => {
     })
 
     .then((token) => {
-      console.log('weve got a token and are ready to send!', token);
       const { dataValues: { id: authId } } = chef;
       return res.status(200).send({ authId, token });
     })

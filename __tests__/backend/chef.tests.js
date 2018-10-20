@@ -1,3 +1,5 @@
+/* This is the start to a testing suite but is not yet functioning */
+
 require('dotenv').config();
 const request = require('supertest');
 
@@ -13,8 +15,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  // seed with some data
-  // await db.query(seed);
   await db.query("INSERT INTO chefs (name, username, password, email) VALUES ('Mr Chef', 'mrchef12', '$2b$10$dnFm3mDyObGaHvobWwgrT.y9lNSjI1XL8/6BiiYjYgnOZYvIMhS3i', 'mrchef@gmail.com');");
   await db.query("INSERT INTO users (name, username, password, email) VALUES ('Francine', 'franny', 'password', 'franny@gmail.com');");
 });
